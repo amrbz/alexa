@@ -18,6 +18,17 @@ config.read('config.ini')
 alexa = Blueprint('alexa_v1', url_prefix='/alexa')
 
 
+dsn = {
+    "user": os.environ['POSTGRES_USER'],
+    "password": os.environ['POSTGRES_PASSWORD'],
+    "database": os.environ['POSTGRES_DB'],
+    "host": config['DB']['host'],
+    "port": config['DB']['port'],
+    "sslmode": config['DB']['sslmode'],
+    "target_session_attrs": config['DB']['target_session_attrs']
+}
+
+
 class Alexa(HTTPMethodView):
     @staticmethod
     def post(request):
@@ -63,8 +74,23 @@ class Alexa(HTTPMethodView):
 
     @staticmethod
     def get(request):
-        res = '1'
-        return text(res)
+        conn = psycopg2.connect(**dsn)
+        try:
+            with conn:
+                with conn.cursor() as cur:
+                    tr_id = '1234'
+                    sql = """
+                        SELECT COUNT(*) FROM records
+                        WHERE id='{tr_id}'
+                    """.format(
+                        tr_id=tr_id
+                    )
+                    cur.execute(sql)
+                    count = cur.fetchone()[0]
+        except Exception as error:
+            pass
+        res = 1 if count > 0 else 0
+        return text(count)
         
 
 alexa.add_route(Alexa.as_view(), '/')
