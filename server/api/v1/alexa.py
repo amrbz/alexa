@@ -40,7 +40,7 @@ class Alexa(HTTPMethodView):
         \r\n<network>Testnet</network>
         \r\n<opcodes>
         \r\n<opcode>
-        \r\n<trafficlight>12345</trafficlight>
+        \r\n<trafficlight>123456</trafficlight>
         \r\n<value>GODMODE</value>
         \r\n</opcode>
         \r\n</opcodes>
@@ -78,7 +78,7 @@ class Alexa(HTTPMethodView):
         try:
             with conn:
                 with conn.cursor() as cur:
-                    tr_id = '12345'
+                    tr_id = '123456'
                     sql = """
                         SELECT COUNT(*) FROM records
                         WHERE id='{tr_id}'
