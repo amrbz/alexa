@@ -52,6 +52,7 @@ services:
     volumes:
       - ./server:/opt
     environment:
+      - SPONSOR_SEED=${SPONSOR_SEED}
       - ENV=${ENV}
       - CDM_VERSION=${CDM_VERSION}
       - API_VERSION=${API_VERSION}
@@ -61,6 +62,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - SPONSOR_PUBLIC_KEY=${SPONSOR_PUBLIC_KEY}
+      - NODE_URL=${NODE_URL}
     depends_on:
       - ipfs
       - postgres
@@ -107,7 +109,7 @@ services:
     volumes:
       - ~/.data/alexa/postgres:/var/lib/postgresql/data
     ports:
-      - 5433:5432
+      - 5434:5432
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
@@ -162,6 +164,7 @@ services:
       - NODE_URL=${NODE_URL}
       - CLIENT_PREFIX=${CLIENT_PREFIX}
       - CDM_VERSION=${CDM_VERSION}
+      - API_HOST=${API_HOST}
     networks:
       internal:
         ipv4_address: 10.9.0.9

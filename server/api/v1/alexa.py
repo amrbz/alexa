@@ -6,6 +6,8 @@ import psycopg2
 import configparser
 from .threads import get_threads
 from .cdms import get_cdms
+import pywaves as pw
+from .ipfs import create_ipfs_file, read_ipfs_file
 
 import redis
 # from redis.connection import ConnectionPool
@@ -19,8 +21,45 @@ alexa = Blueprint('alexa_v1', url_prefix='/alexa')
 class Alexa(HTTPMethodView):
     @staticmethod
     def post(request):
-        res = '0'
-        return text(res)
+        
+        cdm = '''
+            <?xml version="1.0"?>
+            <cdm>
+            <version>{cdmv}</version>
+            <blockchain>Waves</blockchain>
+            <network>Testnet</network>
+            <opcodes>
+                <opcode>
+                    <trafficlight>1234</trafficlight>
+                    <value>GODMODE</value>
+                </opcode>
+            </opcodes>
+            </cdm>
+        '''.format(
+            cdmv=os.environ['CDM_VERSION']
+        )
+        # pw.setChain('testnet')
+        # pw.setNode(node=os.environ['NODE_URL'], chain='testnet')
+        pw.setNode('https://testnode1.wavesnodes.com','testnet')
+        sponsor = pw.Address(seed=os.environ['SPONSOR_SEED'])
+        attachment = create_ipfs_file(cdm)
+        asset = pw.Asset(os.environ['ASSET_ID'])
+        feeAsset = pw.Asset(os.environ['ASSET_ID'])
+
+        print('NODE_URL', os.environ['NODE_URL'])
+        print('sponsor', sponsor)
+        print('asset', asset)
+        print('attachment', attachment['Hash'])
+
+        tx = sponsor.sendAsset(
+            recipient = sponsor,
+            asset = asset,
+            feeAsset = feeAsset,
+            amount = 1,
+            attachment = attachment['Hash'])
+
+        print('TX: {}'.format(tx))
+        return json({'tx': tx})
 
 
     @staticmethod
