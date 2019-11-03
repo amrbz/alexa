@@ -19,6 +19,12 @@ alexa = Blueprint('alexa_v1', url_prefix='/alexa')
 class Alexa(HTTPMethodView):
     @staticmethod
     def post(request):
+        res = '0'
+        return text(res)
+
+
+    @staticmethod
+    def get(request):
         res = '1'
         return text(res)
         
