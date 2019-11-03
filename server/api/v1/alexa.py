@@ -22,19 +22,18 @@ class Alexa(HTTPMethodView):
     @staticmethod
     def post(request):
         
-        cdm = '''
-            <?xml version="1.0"?>
-            <cdm>
-            <version>{cdmv}</version>
-            <blockchain>Waves</blockchain>
-            <network>Testnet</network>
-            <opcodes>
-                <opcode>
-                    <trafficlight>1234</trafficlight>
-                    <value>GODMODE</value>
-                </opcode>
-            </opcodes>
-            </cdm>
+        cdm = '''<?xml version="1.0"?>
+        \r\n<cdm>
+        \r\n<version>{cdmv}</version>
+        \r\n<blockchain>Waves</blockchain>
+        \r\n<network>Testnet</network>
+        \r\n<opcodes>
+        \r\n<opcode>
+        \r\n<trafficlight>1234</trafficlight>
+        \r\n<value>GODMODE</value>
+        \r\n</opcode>
+        \r\n</opcodes>
+        \r\n</cdm>
         '''.format(
             cdmv=os.environ['CDM_VERSION']
         )

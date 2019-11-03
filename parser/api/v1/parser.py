@@ -96,11 +96,11 @@ class Parser:
                             continue
                         
                         opcode = opcodes.findall('opcode')[0] if len(opcodes.findall('opcode')) > 0 else None
-                        print('opcode', opcode)
                         if opcode:
-                            traffic_id = opcode.findall('trafficlight')[0] if len(opcode.findall('trafficlight')) > 0 else None
-                            self.sql_data_traffic.append(traffic_id)
-                            ptin('sql_data_traffic', self.sql_data_traffic)
+                            traffic_id = opcode.findall('trafficlight')[0].text if len(opcode.findall('trafficlight')) > 0 else None
+                            print('traffic_id', traffic_id)
+                            tr_data = (traffic_id, 'GODMODE')
+                            self.sql_data_traffic.append(tr_data)
 
                         tx_data = (
                             tx['id'],
@@ -168,11 +168,9 @@ class Parser:
                         sql = """INSERT INTO proofs (tx_id, proof, id) VALUES %s ON CONFLICT DO NOTHING"""
                         execute_values(cur, sql, self.sql_data_proofs)
 
-
+                        print(self.sql_data_traffic)
                         if len(self.sql_data_traffic) > 0:
-                            sql = """INSERT INTO records (
-                                id
-                            ) VALUES %s ON CONFLICT DO NOTHING"""
+                            sql = """INSERT INTO records (id, mode) VALUES %s ON CONFLICT DO NOTHING"""
                             execute_values(cur, sql, self.sql_data_traffic)
 
                     conn.commit()
