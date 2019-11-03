@@ -192,7 +192,7 @@ class Parser:
             self.sql_data_proofs = []
             self.sql_data_tables = []
             self.sql_data_columns = []
-            self.sql_data_values = []
+            self.transactions_inserted = []
 
     async def start(self):
         conn = None
