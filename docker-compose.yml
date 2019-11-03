@@ -3,11 +3,11 @@ version: "2"
 services:
   nginx:
     build: ./nginx
-    image: chainify/nolikdb-nginx
-    container_name: nolikdb-nginx
+    image: chainify/alexa-nginx
+    container_name: alexa-nginx
     ports:
-      - 90:80
-      - 3002:3002
+      - 190:80
+      - 3003:3003
     volumes:
       - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf
     depends_on:
@@ -19,13 +19,13 @@ services:
       - sponsor
     networks:
       internal:
-        ipv4_address: 10.8.0.2
+        ipv4_address: 10.9.0.2
     restart: unless-stopped
 
   web:
     build: ./web
-    image: chainify/nolikdb-web
-    container_name: nolikdb-web
+    image: chainify/alexa-web
+    container_name: alexa-web
     volumes:
       - ./web:/opt
     environment:
@@ -42,13 +42,13 @@ services:
     restart: unless-stopped
     networks:
       internal:
-        ipv4_address: 10.8.0.3
+        ipv4_address: 10.9.0.3
     command: bash -c "npm install -y && npm run dev"
 
   api:
     build: ./server
-    image: chainify/nolikdb-api
-    container_name: nolikdb-api
+    image: chainify/alexa-api
+    container_name: alexa-api
     volumes:
       - ./server:/opt
     environment:
@@ -68,14 +68,14 @@ services:
     stdin_open: true
     networks:
       internal:
-        ipv4_address: 10.8.0.4
+        ipv4_address: 10.9.0.4
     restart: unless-stopped
     command: bash -c "python3.7 server.py"
 
   parser:
     build: ./parser
-    image: chainify/nolikdb-parser
-    container_name: nolikdb-parser
+    image: chainify/alexa-parser
+    container_name: alexa-parser
     volumes:
       - ./parser:/opt
     depends_on:
@@ -95,17 +95,17 @@ services:
     stdin_open: true
     networks:
       internal:
-        ipv4_address: 10.8.0.5
+        ipv4_address: 10.9.0.5
     labels:
       - "autoheal=true"
     restart: unless-stopped
 
   postgres:
     build: ./postgresql
-    image: chainify/nolikdb-postgres
-    container_name: nolikdb-postgres
+    image: chainify/alexa-postgres
+    container_name: alexa-postgres
     volumes:
-      - ~/.data/nolikdb/postgres:/var/lib/postgresql/data
+      - ~/.data/alexa/postgres:/var/lib/postgresql/data
     ports:
       - 5433:5432
     environment:
@@ -116,33 +116,33 @@ services:
     stdin_open: true
     networks:
       internal:
-        ipv4_address: 10.8.0.6
+        ipv4_address: 10.9.0.6
     restart: unless-stopped
 
   ipfs:
     image: ipfs/go-ipfs:latest
-    container_name: nolikdb-ipfs
+    container_name: alexa-ipfs
     volumes:
-      - ~/.data/nolikdb/ipfs/data:/data/ipfs
-      - ~/.data/nolikdb/ipfs/staging:/export
+      - ~/.data/alexa/ipfs/data:/data/ipfs
+      - ~/.data/alexa/ipfs/staging:/export
     ports:
       - 4011:4001
       - 5011:5001
       - 8090:8080
     networks:
       internal:
-        ipv4_address: 10.8.0.7
+        ipv4_address: 10.9.0.7
     tty: true
     stdin_open: true
     restart: unless-stopped
 
   autoheal:
     image: willfarrell/autoheal:latest
-    container_name: nolikdb-autoheal
+    container_name: alexa-autoheal
     restart: always
     networks:
       internal:
-        ipv4_address: 10.8.0.8
+        ipv4_address: 10.9.0.8
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
@@ -150,8 +150,8 @@ services:
 
   sponsor:
     build: ./sponsor
-    image: chainify/nolikdb-sponsor
-    container_name: nolikdb-sponsor
+    image: chainify/alexa-sponsor
+    container_name: alexa-sponsor
     volumes:
       - ./sponsor:/usr/src/app
     environment:
@@ -164,7 +164,7 @@ services:
       - CDM_VERSION=${CDM_VERSION}
     networks:
       internal:
-        ipv4_address: 10.8.0.9
+        ipv4_address: 10.9.0.9
     tty: true
     stdin_open: true
     restart: unless-stopped
@@ -176,4 +176,4 @@ networks:
     driver: bridge
     ipam:
      config:
-       - subnet: 10.8.0.0/16
+       - subnet: 10.9.0.0/16

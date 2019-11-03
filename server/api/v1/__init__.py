@@ -5,6 +5,7 @@ from .cdms import cdms
 from .tables import tables
 from .columns import columns
 from .values import values
+from .alexa import alexa
 
 api_v1 = Blueprint.group(
   ipfs,
@@ -13,5 +14,6 @@ api_v1 = Blueprint.group(
   tables,
   columns,
   values,
+  alexa,
   url_prefix='/v1'
 )

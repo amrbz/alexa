@@ -19,6 +19,6 @@ module.exports = withCss({
   onDemandEntries: {
     maxInactiveAge: 25 * 1000,
     pagesBufferLength: 2,
-    websocketPort: process.env.WS_PORT || 3002,
+    websocketPort: process.env.WS_PORT || 3003,
   },
 });
