@@ -1,8 +1,8 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
  
-const char* ssid = "HUAWEI-vg4N";
-const char* password =  "cs2Hdmn7";
+const char* ssid = "YOUR_SSID";
+const char* password =  "YOUR_PASSWORD";
 
 int pin_state = 0;
 
